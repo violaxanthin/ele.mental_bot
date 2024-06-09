@@ -1,0 +1,5 @@
+.vscode
+core/.env
+venv
+core/handlers/__pycache__
+dist

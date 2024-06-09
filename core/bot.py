@@ -44,7 +44,7 @@ dp = Dispatcher(storage=storage)
 async def start(message: Message):
     user_id = message.from_user.id
     user_full_name = message.from_user.full_name
-    logging.INFO(f'{user_id=} {user_full_name=}', time.asctime())
+    logging.info(f'{user_id} {user_full_name} {time.asctime()}')
     await message.answer(
         text = f'Здравствуйте, {user_full_name}! На связи Ele.Mental – бот самомониторинга. \n\n '
         'Он создан для того, чтобы помочь вам самостоятельно контролировать свое ментальное состояние.\n' 
@@ -54,13 +54,13 @@ async def start(message: Message):
 'Перед использованием чат-бота, пожалуйста, обратитесь к медицинскому специалисту.\n\n'
     )
     scheduler.add_job(apsched.send_message_time, trigger='date', run_date=datetime.now() + timedelta(seconds=15),
-                  kwargs={'bot':bot})
+                  kwargs={'bot':bot, 'user_id':user_id})
     scheduler.add_job(apsched.send_message_cron_1, trigger='cron', hour=10, 
                   minute=0, start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
-                  kwargs={'bot':bot})
+                  kwargs={'bot':bot, 'user_id':user_id, 'user_full_name':user_full_name})
     scheduler.add_job(apsched.send_message_cron_2, trigger='cron', hour=19,
                   minute=0, start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
-                  kwargs={'bot':bot})
+                  kwargs={'bot':bot, 'user_id':user_id})
     scheduler.start()
 
 

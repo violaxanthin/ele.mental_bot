@@ -11,6 +11,8 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.enums import ParseMode
 
+from flask import Flask
+
 from aiogram.fsm.storage.memory import MemoryStorage
  
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -51,18 +53,18 @@ async def start(message: Message):
 'Формат чат-бота – дневник, который вам предлагается заполнять в с помощью коротких ответов на вопросы из клинических опросников и шкал, '
 'а результаты будут автоматически анализироваться алгоритмами искусственного интеллекта, чтобы сформировать картину стабильности состояния.\n '
 'В случае обнаружения признаков изменений в состоянии, вы получите  письменную рекомендацию к посещению доктора. \n' 
+'Данные, введенные в формы будут использованы исключительно в рамках исследования и в соответствии с политикой персональных данных Google: https://policies.google.com/privacy \n'
 'Перед использованием чат-бота, пожалуйста, обратитесь к медицинскому специалисту.\n\n'
     )
     scheduler.add_job(apsched.send_message_time, trigger='date', run_date=datetime.now() + timedelta(seconds=15),
                   kwargs={'bot':bot, 'user_id':user_id})
     scheduler.add_job(apsched.send_message_cron_1, trigger='cron', hour=10, 
-                  minute=0, start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
+                  minute=0, day_of_week='0, 3, 6', start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
                   kwargs={'bot':bot, 'user_id':user_id, 'user_full_name':user_full_name})
     scheduler.add_job(apsched.send_message_cron_2, trigger='cron', hour=19,
-                  minute=0, start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
+                  minute=0, day_of_week='0, 3, 6', start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
                   kwargs={'bot':bot, 'user_id':user_id})
     scheduler.start()
-
 
 
 async def main() -> None:
@@ -75,4 +77,4 @@ async def main() -> None:
 if __name__ == '__main__':
     dp.run_polling(bot, allowed_updates=[])
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    asyncio.run(main())
+    asyncio.run(main()) 

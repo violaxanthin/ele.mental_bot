@@ -1,5 +1,5 @@
 .vscode
 core/.env
 venv
-core/handlers/__pycache__
+__pycache__
 dist

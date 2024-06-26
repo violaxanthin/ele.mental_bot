@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 storage = MemoryStorage()
 
 # Create objects of Dispatcher and Bot
-bot_token = os.getenv("BOT_TOKEN")
+bot_token = "6944011537:AAEVOkl0qj2vYP7VkaWYq-kZ4xpXHF0qbTs"
 bot = Bot(bot_token)
 dp = Dispatcher(storage=storage)
 
@@ -66,7 +66,6 @@ async def start(message: Message):
                   minute=0, day_of_week='0, 3, 6', start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
                   kwargs={'bot':bot, 'user_id':user_id})
     scheduler.start()
-
 
 async def main() -> None:
     # Initialize Bot instance with a default parse mode which will be passed to all API calls

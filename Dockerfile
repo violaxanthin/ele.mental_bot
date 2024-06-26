@@ -43,7 +43,6 @@ USER appuser
 
 # Copy the source code into the container.
 COPY . .
-COPY .env ./
 
 # Expose the port that the application listens on.
 EXPOSE 5001

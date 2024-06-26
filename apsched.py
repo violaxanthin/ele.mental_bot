@@ -1,8 +1,4 @@
-import os
 from aiogram import Bot
-
-# bot token from @BotFather
-bot_token = os.getenv("BOT_TOKEN")
 
 # reminders 
 async def send_message_time(bot: Bot, user_id: int):

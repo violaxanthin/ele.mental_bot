@@ -1,11 +1,10 @@
-from aiogram import Bot
-from aiogram.types import Message
 import os
+from aiogram import Bot
 
-# токен бота, полученный у @BotFather
+# bot token from @BotFather
 bot_token = os.getenv("BOT_TOKEN")
 
-# reminders и ID для получения уведомлений о запуске
+# reminders 
 async def send_message_time(bot: Bot, user_id: int):
     await bot.send_message(user_id, f'Введенные данные необходимы исключительно в целях исследования.\n '
                            'Для вашего удобства бот будет присылать вам уведомления с опросниками 2 раза в день - утром и вечером. \n'

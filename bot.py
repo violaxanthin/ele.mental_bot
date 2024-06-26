@@ -3,25 +3,22 @@ import time
 import logging 
 import os
 import sys
-
 import asyncio
+import apsched
+
 from dotenv import load_dotenv
-from aiogram import Bot, Dispatcher, F, types
+from aiogram import Bot, Dispatcher, BaseMiddleware
 from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.enums import ParseMode
-
-from flask import Flask
-
 from aiogram.fsm.storage.memory import MemoryStorage
- 
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-from handlers import apsched
+from flask import Flask
 from datetime import datetime, timedelta
 load_dotenv()
 
-from aiogram import BaseMiddleware
+scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
 
 class CounterMiddleware(BaseMiddleware):
     def __init__(self) -> None:
@@ -33,15 +30,19 @@ logging.getLogger('apscheduler').setLevel(logging.DEBUG)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Инициализируем хранилище (создаем экземпляр класса MemoryStorage)
+# Initialize MemoryStorage
 storage = MemoryStorage()
 
-# Создаем объекты бота и диспетчера
+# Create objects of Dispatcher and Bot
 bot_token = os.getenv("BOT_TOKEN")
 bot = Bot(bot_token)
 dp = Dispatcher(storage=storage)
 
-#Старт бота и запуск напоминаний
+# start the flask app
+app = Flask(__name__)
+@app.route('/')
+
+# Start function
 @dp.message(Command("start"))
 async def start(message: Message):
     user_id = message.from_user.id
@@ -73,7 +74,7 @@ async def main() -> None:
     # And the run events dispatching
     await dp.start_polling(bot)
 
-# Запускаем поллинг
+# Launch polling
 if __name__ == '__main__':
     dp.run_polling(bot, allowed_updates=[])
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)

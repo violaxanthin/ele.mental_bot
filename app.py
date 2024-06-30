@@ -14,7 +14,6 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from flask import Flask
 from datetime import datetime, timedelta
 load_dotenv()
 
@@ -34,16 +33,12 @@ logger = logging.getLogger(__name__)
 storage = MemoryStorage()
 
 # Create objects of Dispatcher and Bot
-bot_token = "6944011537:AAEVOkl0qj2vYP7VkaWYq-kZ4xpXHF0qbTs"
+bot_token =  os.getenv("BOT_TOKEN") 
 bot = Bot(bot_token)
 dp = Dispatcher(storage=storage)
 
-# start the flask app
-app = Flask(__name__)
-@app.route('/')
-
 # Start function
-@dp.message(Command("start"))
+@dp.message(Command(commands=["start"]))
 async def start(message: Message):
     user_id = message.from_user.id
     user_full_name = message.from_user.full_name
@@ -66,6 +61,12 @@ async def start(message: Message):
                   minute=0, day_of_week='0, 3, 6', start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
                   kwargs={'bot':bot, 'user_id':user_id})
     scheduler.start()
+
+@dp.message(Command(commands=["help"]))    
+async def help(message: Message):
+    await message.answer(
+        text = 'Нужна помощь? Свяжитесь с нами: @violaxanthin'
+    )
 
 async def main() -> None:
     # Initialize Bot instance with a default parse mode which will be passed to all API calls

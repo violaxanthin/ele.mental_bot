@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  ele:
+    image: ele
+    ports: 
+      - "8080:80"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - TZ=Europe/Moscow
+      - BOT_TOKEN=${BOT_TOKEN}

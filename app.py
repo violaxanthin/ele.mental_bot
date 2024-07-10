@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, BaseMiddleware
 from aiogram.filters import Command
 from aiogram.types import Message
-from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -70,9 +69,6 @@ async def help(message: Message):
     )
 
 async def main() -> None:
-    # Initialize Bot instance with a default parse mode which will be passed to all API calls
-    bot = Bot(bot_token, parse_mode=ParseMode.HTML)
-    # And the run events dispatching
     await dp.start_polling(bot)
 
 # Launch polling

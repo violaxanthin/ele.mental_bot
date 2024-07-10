@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 storage = MemoryStorage()
 
 # Create objects of Dispatcher and Bot
+
 bot_token =  os.getenv("BOT_TOKEN") 
 bot = Bot(bot_token)
 dp = Dispatcher(storage=storage)
@@ -55,10 +56,10 @@ async def start(message: Message):
     scheduler.add_job(apsched.send_message_time, trigger='date', run_date=datetime.now() + timedelta(seconds=15),
                   kwargs={'bot':bot, 'user_id':user_id})
     scheduler.add_job(apsched.send_message_cron_1, trigger='cron', hour=10, 
-                  minute=0, day_of_week='0, 3, 6', start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
+                  minute=0, start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
                   kwargs={'bot':bot, 'user_id':user_id, 'user_full_name':user_full_name})
     scheduler.add_job(apsched.send_message_cron_2, trigger='cron', hour=19,
-                  minute=0, day_of_week='0, 3, 6', start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
+                  minute=0, start_date=datetime.now(), end_date=datetime.now() + timedelta(days=14),
                   kwargs={'bot':bot, 'user_id':user_id})
     scheduler.start()
 

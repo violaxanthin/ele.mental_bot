@@ -60,8 +60,7 @@ async def start(message: Message):
         scheduler.add_job(
         apsched.send_message_cron_1,
         trigger='cron',
-        hour=1,
-        minute=20,
+        hour=10,
         start_date=datetime.now() + timedelta(days=3 * i),
         kwargs={'bot': bot, 'user_id': user_id, 'user_full_name': user_full_name}
         )
@@ -69,13 +68,13 @@ async def start(message: Message):
         scheduler.add_job(
         apsched.send_message_cron_2,
         trigger='cron',
-        hour=1,
-        minute=21,
+        hour=19,
         start_date=datetime.now() + timedelta(days=3 * i),
         kwargs={'bot': bot, 'user_id': user_id}
         )
 
-        scheduler.start()
+    
+    scheduler.start()
 
 @dp.message(Command(commands=["help"]))
 async def help(message: Message):

@@ -32,7 +32,10 @@ logger = logging.getLogger(__name__)
 storage = MemoryStorage()
 
 # Create objects of Dispatcher and Bot
-bot_token =  os.getenv("BOT_TOKEN") 
+bot_token =  os.getenv("BOT_TOKEN")
+logging.info("sleeping of 5 sec")
+time.sleep(5)
+
 bot = Bot(bot_token)
 dp = Dispatcher(storage=storage)
 

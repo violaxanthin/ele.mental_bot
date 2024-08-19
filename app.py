@@ -37,6 +37,11 @@ bot = Bot(bot_token)
 dp = Dispatcher(storage=storage)
 
 # Start function
+from datetime import datetime, timedelta
+from aiogram import Bot, types
+from aiogram.filters import Command
+from aiogram.types import Message
+
 @dp.message(Command(commands=["start"]))
 async def start(message: Message):
     user_id = message.from_user.id
@@ -72,14 +77,13 @@ async def start(message: Message):
     )
 
     # Планирование остальных анкет
-    for i in range(1, 5):  # 4 дополнительных цикла
-        next_date = start_date + timedelta(days=2*i)
-        
+    next_morning = start_date.replace(hour=10, minute=0, second=0, microsecond=0) + timedelta(days=2)
+    for i in range(4):  # 4 дополнительных цикла
         # Утренняя анкета в 10:00
         scheduler.add_job(
             apsched.send_message_cron_1,
             trigger='date',
-            run_date=next_date.replace(hour=10, minute=18, second=0, microsecond=0),
+            run_date=next_morning,
             kwargs={'bot': bot, 'user_id': user_id, 'user_full_name': user_full_name}
         )
 
@@ -87,9 +91,11 @@ async def start(message: Message):
         scheduler.add_job(
             apsched.send_message_cron_2,
             trigger='date',
-            run_date=next_date.replace(hour=19, minute=0, second=0, microsecond=0),
+            run_date=next_morning.replace(hour=19),
             kwargs={'bot': bot, 'user_id': user_id}
         )
+
+        next_morning += timedelta(days=2)
 
     scheduler.start()
 

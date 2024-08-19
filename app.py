@@ -79,7 +79,7 @@ async def start(message: Message):
         scheduler.add_job(
             apsched.send_message_cron_1,
             trigger='date',
-            run_date=next_date.replace(hour=10, minute=0, second=0, microsecond=0),
+            run_date=next_date.replace(hour=10, minute=18, second=0, microsecond=0),
             kwargs={'bot': bot, 'user_id': user_id, 'user_full_name': user_full_name}
         )
 
